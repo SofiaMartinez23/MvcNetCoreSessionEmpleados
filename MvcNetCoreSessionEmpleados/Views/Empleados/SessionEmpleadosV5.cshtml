@@ -1,0 +1,65 @@
+﻿@model List<Empleado>
+
+@{
+    // Obtener la lista de empleados almacenados desde ViewData
+    var empleadosAlmacenados = ViewData["IDS_EMPLEADOS_ALMACENADOS"] as List<int>;
+    List<Empleado> favoritos = memoryCache.Get<List<Empleado>>("FAVORITOS");
+}
+
+<h1>Session Empleados V5</h1>
+
+@if (favoritos != null)
+{
+    <h3 style="background-color:darkolivegreen; color: white">Empleados session @favoritos.Count</h3>
+}
+@if(empleadosAlmacenados != null){
+    <h3 style="background-color:darkgoldenrod; color: white">Empleados session @empleadosAlmacenados.Count</h3>
+}
+
+<p>
+    <a asp-controller="Empleados" asp-action="EmpleadosAlmacenadosV5">Mostrar empleados almacenados</a>
+</p>
+
+<h3 style="color:lightgreen">@ViewData["MENSAJE"]</h3>
+
+<ul class="list-group">
+    @foreach (Empleado empleado in Model)
+    {
+        <li class="list-group-item list-group-item-dark">
+            @empleado.Apellido
+
+            @if(favoritos == null){
+                <a asp-controller="Empleados" asp-action="SessionEmpleadosV5"
+                   asp-route-idfavorito="@empleado.IdEmpleado">🤍</a>
+            }
+            else
+            {
+                Empleado empFavorito = favoritos.Find(x => x.IdEmpleado == empleado.IdEmpleado);
+                @if(empFavorito != null)
+                {
+                    <span class="text-success">
+                        <i class="fas fa-check">💜</i>
+                    </span>
+                }else
+                {
+                    <a asp-controller="Empleados" asp-action="SessionEmpleadosV5"
+                       asp-route-idfavorito="@empleado.IdEmpleado">🤍</a>
+                }
+            }
+
+            @if (empleadosAlmacenados != null && empleadosAlmacenados.Contains(empleado.IdEmpleado))
+            {
+                <span class="text-success">
+                    <i class="fas fa-check">✅</i>
+                </span>
+            }
+            else
+            {
+                <form asp-controller="Empleados" asp-action="SessionEmpleadosV5" method="post" style="display:inline;">
+                    <input type="hidden" name="idempleado" value="@empleado.IdEmpleado" />
+                    <button type="submit" class="btn btn-link">Almacenar empleado</button>
+                </form>
+            }
+        </li>
+    }
+</ul>

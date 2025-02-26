@@ -1,0 +1,60 @@
+﻿@model List<Empleado>
+
+<h1>Empleados Almacenados Session OK</h1>
+
+<p>
+    <a asp-controller="Empleados" asp-action="SessionEmpleadosV4">Empleados session OK</a>
+</p>
+
+<h2>@ViewData["MENSAJE"]</h2>
+
+@if (Model != null)
+{
+
+    <table class="table table-bordered table-dark">
+        <thead>
+            <tr>
+                <th>
+                    IdEmpleado
+                </th>
+                <th>
+                    Apellido
+                </th>
+                <th>
+                    Oficio
+                </th>
+                <th>
+                    Salario
+                </th>
+                <th>
+                    IdDepartamento
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Empleado emp in Model)
+            {
+                <tr>
+                    <td>
+                        @emp.IdEmpleado
+                    </td>
+                    <td>
+                        @emp.Apellido
+                    </td>
+                    <td>
+                        @emp.Oficio
+                    </td>
+                    <td>
+                        @emp.Salario
+                    </td>
+                    <td>
+                        @emp.IdDepartamento
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}

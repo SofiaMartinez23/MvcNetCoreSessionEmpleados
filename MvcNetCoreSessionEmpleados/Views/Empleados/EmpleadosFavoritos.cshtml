@@ -1,0 +1,49 @@
+﻿@{
+    List<Empleado> favoritos = memoryCache.Get<List<Empleado>>("FAVORITOS");
+}
+
+<h1>Empleados Favoritos Session V5</h1>
+
+<p>
+    <a asp-controller="Empleados" asp-action="SessionEmpleadosV5">Volver a almacenar empleados</a>
+</p>
+
+<h2>@ViewData["MENSAJE"]</h2>
+
+@if(favoritos == null){
+    <h2>No existen empleados favoritos</h2>
+}
+else
+{
+    <table class="table table-bordered table-dark">
+        <thead>
+            <tr>
+                <th>IdEmpleado</th>
+                <th>Apellido</th>
+                <th>Oficio</th>
+                <th>Salario</th>
+                <th>IdDepartamento</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Empleado emp in favoritos)
+            {
+                <tr>
+                    <td>@emp.IdEmpleado</td>
+                    <td>@emp.Apellido</td>
+                    <td>@emp.Oficio</td>
+                    <td>@emp.Salario</td>
+                    <td>@emp.IdDepartamento</td>    
+                    <td>
+                        <a class="btn btn-outline-light" asp-controller="Empleados" 
+                        asp-action="EmpleadosFavoritos" 
+                        asp-route-ideliminar="@emp.IdEmpleado">
+                            Delete
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
